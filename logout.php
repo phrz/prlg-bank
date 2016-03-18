@@ -6,5 +6,4 @@
     $s->destroy();
     $s = null;
 
-    header("Location: index.php?e=1");
-?>
+    header('Location: index.php?e=1');

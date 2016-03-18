@@ -10,7 +10,7 @@
 
         <header>
             <a href="http://paulherz.com/bank" class="title">Bank</a>
-            <?php if(isset($user)): ?>
+            <?php if (isset($user)): ?>
                 <nav class="h-right">
                     Welcome, <?php echo $user->username; ?>
                     <a href="logout.php" class="logout">Log Out</a>

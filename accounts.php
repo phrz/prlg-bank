@@ -14,8 +14,7 @@
     $s = new Session();
     $s->isAuth() or header('Location: index.php?e=2');
 
-    $user = User::find( $s->user );
+    $user = User::find($s->user);
 
     const INDIRECT = true;
     include 'pages/accounts_page.php';
-?>

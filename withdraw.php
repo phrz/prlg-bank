@@ -18,7 +18,7 @@
     $form->addField('nonce', 'Form::validateNonce');
 
     $form->submit([
-        'success' => function($data) {
+        'success' => function ($data) {
 
             // get the Account Model
             $number = $data['fromAccount'];
@@ -26,22 +26,21 @@
 
             // If the withdrawal amount is more than the
             // balance, redirect with `w2` (insuff. funds)
-            $withdraw = floatval( $data['amount'] );
+            $withdraw = floatval($data['amount']);
 
-            if($withdraw > $account->balance) {
-                header("Location: accounts.php?e=w2");
+            if ($withdraw > $account->balance) {
+                header('Location: accounts.php?e=w2');
             } else {
                 $account->balance -= $withdraw;
 
                 // Commit the Model back to the DB
                 $account->save();
 
-                header("Location: accounts.php?e=w0");
+                header('Location: accounts.php?e=w0');
             }
         },
-        'failure' => function($data) {
+        'failure' => function ($data) {
             // Redirect back to accounts
-            header("Location: accounts.php?e=w1");
-        }
+            header('Location: accounts.php?e=w1');
+        },
     ]);
-?>

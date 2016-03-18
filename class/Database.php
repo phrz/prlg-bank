@@ -2,8 +2,8 @@
 
     include_once 'Config.php';
 
-    class Database {
-
+    class Database
+    {
         private $settings; // : map(host,username,password,database,charset[,prefix])
         private $connected = false;
 
@@ -11,21 +11,26 @@
         private $tableName; // : string
 
         // Use Config::$database settings by default
-        function __construct() {
+        public function __construct()
+        {
             $this->settings = Config::$database;
-            if(!isset($this->settings['prefix'])) {
+            if (!isset($this->settings['prefix'])) {
                 $this->settings['prefix'] = '';
             }
         }
 
-        function __destruct() {
-            if($this->connected) { $this->disconnect(); }
+        public function __destruct()
+        {
+            if ($this->connected) {
+                $this->disconnect();
+            }
         }
 
         // connect()
-        function connect() {
-            if($this->connected) {
-                throw new Exception("Already Connected", 1);
+        public function connect()
+        {
+            if ($this->connected) {
+                throw new Exception('Already Connected', 1);
             } else {
                 $dsn = 'mysql:host='.
                         $this->settings['host'].
@@ -39,8 +44,8 @@
                         $dsn,
                         $this->settings['username'],
                         $this->settings['password']);
-                } catch(PDOException $pe) {
-                    die("Unable to connect to database");
+                } catch (PDOException $pe) {
+                    die('Unable to connect to database');
                 }
 
                 $this->connected = true;
@@ -48,18 +53,21 @@
         }
 
         // all() -> array(map())
-        function all() {
-            if(!$this->connected) {
-                throw new Exception("Call to all() when not connected!", 1);
+        public function all()
+        {
+            if (!$this->connected) {
+                throw new Exception('Call to all() when not connected!', 1);
             }
-            $s = $this->pdo->query("SELECT * FROM `". $this->tableName ."`");
+            $s = $this->pdo->query('SELECT * FROM `'.$this->tableName.'`');
+
             return $s->fetchAll(PDO::FETCH_ASSOC);
         }
 
         // where($attr,$val) -> map()
-        function where(string $attr,$val) {
-            if(!$this->connected) {
-                throw new Exception("Call to where() when not connected!", 1);
+        public function where(string $attr, $val)
+        {
+            if (!$this->connected) {
+                throw new Exception('Call to where() when not connected!', 1);
             }
 
             $t = $this->tableName;
@@ -71,9 +79,10 @@
             return $s->fetchAll(PDO::FETCH_ASSOC);
         }
 
-        function deleteWhere(string $attr,$val): bool {
-            if(!$this->connected) {
-                throw new Exception("Call to deleteWhere() when not connected!", 1);
+        public function deleteWhere(string $attr, $val): bool
+        {
+            if (!$this->connected) {
+                throw new Exception('Call to deleteWhere() when not connected!', 1);
             }
 
             $t = $this->tableName;
@@ -82,12 +91,13 @@
             $s = $this->pdo->prepare($sql);
             $s->execute(array($val));
 
-            return ($s->rowCount() > 0);
+            return $s->rowCount() > 0;
         }
 
-        function whereAndDelete(string $attr,$val) {
-            if(!$this->connected) {
-                throw new Exception("Call to whereAndDelete() when not connected!", 1);
+        public function whereAndDelete(string $attr, $val)
+        {
+            if (!$this->connected) {
+                throw new Exception('Call to whereAndDelete() when not connected!', 1);
             }
 
             // BEGIN
@@ -116,21 +126,21 @@
         }
 
         // disconnect()
-        function disconnect() {
+        public function disconnect()
+        {
             $this->pdo = null; // destructs PDO and self-disconnects
             $this->connected = false;
         }
 
         // isConnected() -> bool
-        function isConnected() {
+        public function isConnected()
+        {
             return $this->connected;
         }
 
         // setTable(t: string)
-        function setTable($t) {
-            $this->tableName = $this->settings['prefix'] . $t;
+        public function setTable($t)
+        {
+            $this->tableName = $this->settings['prefix'].$t;
         }
-
     }
-
-?>

@@ -15,9 +15,8 @@
 
     $s = new Session();
 
-    if( $s->authenticate($_POST['username'], $_POST['password']) ) {
-        header("Location: accounts.php");
+    if ($s->authenticate($_POST['username'], $_POST['password'])) {
+        header('Location: accounts.php');
     } else {
-        header("Location: index.php?e=0");
+        header('Location: index.php?e=0');
     }
-?>

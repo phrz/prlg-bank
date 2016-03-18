@@ -9,17 +9,21 @@
 
     date_default_timezone_set('America/Chicago');
 
-    class Session {
-
-        function __construct() {
-            if(!isset($_SESSION)) {
+    class Session
+    {
+        public function __construct()
+        {
+            if (!isset($_SESSION)) {
                 session_start();
             }
         }
 
-        public function authenticate($username,$password) {
+        public function authenticate($username, $password)
+        {
             // Check parameters
-            if(!isset($username) || !isset($password)) {return false;}
+            if (!isset($username) || !isset($password)) {
+                return false;
+            }
 
             // Check user existance
             $u = null;
@@ -33,7 +37,7 @@
             $given = new Crypto($password, $u->crypto->getSalt());
             $known = $u->crypto;
 
-            if(!Crypto::compare($given,$known)) {
+            if (!Crypto::compare($given, $known)) {
                 // hash mismatch, bad password
                 return false;
             }
@@ -45,29 +49,32 @@
             return true;
         }
 
-        public function isAuth() {
-            if(!headers_sent()) { session_regenerate_id(); }
+        public function isAuth()
+        {
+            if (!headers_sent()) {
+                session_regenerate_id();
+            }
+
             return isset($_SESSION['user']);
         }
 
-        public function destroy() {
+        public function destroy()
+        {
             unset($_SESSION['user']);
             session_destroy();
         }
 
-        public function __get($name) {
-            if(isset($_SESSION[$name])) {
+        public function __get($name)
+        {
+            if (isset($_SESSION[$name])) {
                 return $_SESSION[$name];
             } else {
-                throw new Exception("Unset session variable.",1);
+                throw new Exception('Unset session variable.', 1);
             }
         }
 
-        public function __set($name,$value) {
+        public function __set($name, $value)
+        {
             $_SESSION[$name] = $value;
         }
-
     }
-
-
-?>

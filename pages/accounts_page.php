@@ -1,6 +1,6 @@
 <?php
     defined('INDIRECT') or die('Forbidden');
-    $pageTitle = "Accounts";
+    $pageTitle = 'Accounts';
     include 'header.part.php';
 ?>
 
@@ -12,9 +12,9 @@
                 <thead><th>Account</th><th>Balance</th></thead>
                 <tbody>
                     <?php foreach ($user->accounts as $account) {
-                        echo '<tr><td class="mono"># ' . $account->number . '</td>';
-                        echo '<td class="right">' . money_format('$ %i', $account->balance) . '</td></tr>';
-                    } ?>
+    echo '<tr><td class="mono"># '.$account->number.'</td>';
+    echo '<td class="right">'.money_format('$ %i', $account->balance).'</td></tr>';
+} ?>
                 </tbody>
             </table>
 
@@ -35,28 +35,26 @@
                         <span class="prefix">#</span>
                         <select name="fromAccount" class="right" style="width: 4em">
                             <?php foreach ($user->accounts as $account) {
-                                echo '<option>' . $account->number . '</option>';
-                            } ?>
+    echo '<option>'.$account->number.'</option>';
+} ?>
                         </select>
                     </div>
 
                     <input
                         type="hidden"
                         name="nonce"
-                        value="<?php echo NonceManager::generate( $user )->nonce; ?>"
+                        value="<?php echo NonceManager::generate($user)->nonce; ?>"
                     >
 
                     <button>Go</button>
 
                     <?php
-                        if(isset($_GET['e'])) {
-                            if($_GET['e'] == 'w0') {
+                        if (isset($_GET['e'])) {
+                            if ($_GET['e'] == 'w0') {
                                 echo '<span style="color:green">Successfully withdrew from account.</span>';
-                            }
-                            elseif($_GET['e'] == 'w1') {
+                            } elseif ($_GET['e'] == 'w1') {
                                 echo '<span style="color:red">There was a problem with your withdrawal.</span>';
-                            }
-                            elseif($_GET['e'] == 'w2') {
+                            } elseif ($_GET['e'] == 'w2') {
                                 echo '<span style="color:red">Insufficient funds.</span>';
                             }
                         }
@@ -82,25 +80,24 @@
                         <span class="prefix">#</span>
                         <select name="toAccount" class="right" style="width: 4em">
                             <?php foreach ($user->accounts as $account) {
-                                echo '<option>' . $account->number . '</option>';
-                            } ?>
+    echo '<option>'.$account->number.'</option>';
+} ?>
                         </select>
                     </div>
 
                     <input
                         type="hidden"
                         name="nonce"
-                        value="<?php echo NonceManager::generate( $user )->nonce; ?>"
+                        value="<?php echo NonceManager::generate($user)->nonce; ?>"
                     >
 
                     <button>Go</button>
 
                     <?php
-                        if(isset($_GET['e'])) {
-                            if($_GET['e'] == 'd0') {
+                        if (isset($_GET['e'])) {
+                            if ($_GET['e'] == 'd0') {
                                 echo '<span style="color:green">Successfully deposited to account.</span>';
-                            }
-                            elseif($_GET['e'] == 'd1') {
+                            } elseif ($_GET['e'] == 'd1') {
                                 echo '<span style="color:red">There was a problem with your deposit.</span>';
                             }
                         }
@@ -125,8 +122,8 @@
                         <span class="prefix">#</span>
                         <select name="fromAccount" class="right" style="width: 4em">
                             <?php foreach ($user->accounts as $account) {
-                                echo '<option>' . $account->number . '</option>';
-                            } ?>
+    echo '<option>'.$account->number.'</option>';
+} ?>
                         </select>
                     </div>
 
@@ -136,31 +133,28 @@
                         <span class="prefix">#</span>
                         <select name="toAccount" class="right" style="width: 4em">
                             <?php foreach ($user->accounts as $account) {
-                                echo '<option>' . $account->number . '</option>';
-                            } ?>
+    echo '<option>'.$account->number.'</option>';
+} ?>
                         </select>
                     </div>
 
                     <input
                         type="hidden"
                         name="nonce"
-                        value="<?php echo NonceManager::generate( $user )->nonce; ?>"
+                        value="<?php echo NonceManager::generate($user)->nonce; ?>"
                     >
 
                     <button>Go</button>
 
                     <?php
-                        if(isset($_GET['e'])) {
-                            if($_GET['e'] == 't0') {
+                        if (isset($_GET['e'])) {
+                            if ($_GET['e'] == 't0') {
                                 echo '<span style="color:green">Successfully transferred.</span>';
-                            }
-                            elseif($_GET['e'] == 't1') {
+                            } elseif ($_GET['e'] == 't1') {
                                 echo '<span style="color:red">There was a problem with your transfer.</span>';
-                            }
-                            elseif($_GET['e'] == 't2') {
+                            } elseif ($_GET['e'] == 't2') {
                                 echo '<span style="color:red">Insufficient funds in source account.</span>';
-                            }
-                            elseif($_GET['e'] == 't3') {
+                            } elseif ($_GET['e'] == 't3') {
                                 echo '<span style="color:red">Cannot transfer to same account.</span>';
                             }
                         }

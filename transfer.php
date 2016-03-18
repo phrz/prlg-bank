@@ -23,7 +23,7 @@
     // Validate accounts and field values, then perform
     // logical validation in callback below.
     $form->submit([
-        'success' => function($data) {
+        'success' => function ($data) {
 
             // get the source Account Model
             $fromNo = $data['fromAccount'];
@@ -33,19 +33,17 @@
             $toNo = $data['toAccount'];
             $toAccount = Account::find($toNo);
 
-            $transfer = floatval( $data['amount'] );
+            $transfer = floatval($data['amount']);
 
             // Sufficient funds check
-            if($transfer > $fromAccount->balance) {
-                header("Location: accounts.php?e=t2");
+            if ($transfer > $fromAccount->balance) {
+                header('Location: accounts.php?e=t2');
             }
 
             // Different From/To accounts check
-            elseif($fromNo == $toNo) {
-                header("Location: accounts.php?e=t3");
-            }
-
-            else {
+            elseif ($fromNo == $toNo) {
+                header('Location: accounts.php?e=t3');
+            } else {
                 // Perform the transfer
                 $fromAccount->balance -= $transfer;
                 $toAccount->balance += $transfer;
@@ -54,13 +52,11 @@
                 $fromAccount->save();
                 $toAccount->save();
 
-                header("Location: accounts.php?e=t0");
+                header('Location: accounts.php?e=t0');
             }
         },
-        'failure' => function($data) {
+        'failure' => function ($data) {
             // Redirect back to accounts
-            header("Location: accounts.php?e=t1");
-        }
+            header('Location: accounts.php?e=t1');
+        },
     ]);
-
-?>

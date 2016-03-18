@@ -19,13 +19,10 @@ include_once 'class/Account.php';
 const INDIRECT = true; // direct template access prevention
 $s = new Session();
 
-if(!$s->isAuth()) {
+if (!$s->isAuth()) {
     // Login screen
     include 'pages/login_prompt.php';
 } else {
     // Accounts screen
-    header("Location: accounts.php");
+    header('Location: accounts.php');
 }
-
-
-?>

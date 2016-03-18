@@ -5,46 +5,52 @@
 // algorithm and never stores the plaintext
 // after object construction.
 
-class Crypto {
-
+class Crypto
+{
     private $salt;
     private $hash;
 
     // Generate a salt and store the hash
-    function __construct($plain, $salt = false, $compute = true) {
-        if(!$salt && $compute) {
+    public function __construct($plain, $salt = false, $compute = true)
+    {
+        if (!$salt && $compute) {
             $this->salt = $this->generateSalt();
         } else {
             $this->salt = $salt;
         }
 
-        if($compute) {
+        if ($compute) {
             $this->hash = $this->computeHash($plain);
         }
     }
 
     // withHash($hash: string, $salt: string) -> Crypto
-    public static function withHash($hash, $salt) {
-        $c = new self(null,null,false);
+    public static function withHash($hash, $salt)
+    {
+        $c = new self(null, null, false);
         $c->setHash($hash);
         $c->setSalt($salt);
+
         return $c;
     }
 
     // compare($aC: Crypto, $bC: Crypto) -> bool
-    public static function compare($aC, $bC) {
+    public static function compare($aC, $bC)
+    {
         // Get the two underlying hashes
         $a = $aC->getHash();
         $b = $bC->getHash();
 
         // perform a time attack resistant comparison
-    	$ret = strlen($a) ^ strlen($b);
-    	$ret |= array_sum(unpack("C*", $a^$b));
-    	return !$ret;
+        $ret = strlen($a) ^ strlen($b);
+        $ret |= array_sum(unpack('C*', $a ^ $b));
+
+        return !$ret;
     }
 
     // generateSalt() -> string
-    private function generateSalt() {
+    private function generateSalt()
+    {
         // mt_rand() is inherently not
         // crypto secure, but for lack of
         // OpenSSL on this server, this unique
@@ -53,11 +59,13 @@ class Crypto {
 
         $salt = openssl_random_pseudo_bytes(32);
         $salt = bin2hex($salt);
+
         return $salt;
     }
 
     // computeHash($plain: string) -> string
-    private function computeHash($plain) {
+    private function computeHash($plain)
+    {
         // Iteratively apply the SHA 512
         // hash on the password, appending
         // both the salt and the original
@@ -65,31 +73,33 @@ class Crypto {
 
         $iterations = 100;
 
-        $result = hash('sha512', $plain . $this->salt);
+        $result = hash('sha512', $plain.$this->salt);
 
-        for($i = 0; $i < $iterations; $i++) {
-            $result = hash('sha512', $result . $this->salt . $plain);
+        for ($i = 0; $i < $iterations; ++$i) {
+            $result = hash('sha512', $result.$this->salt.$plain);
         }
 
         return $result;
     } // end computeHash
 
-    public function getHash() {
+    public function getHash()
+    {
         return $this->hash;
     }
 
-    public function getSalt() {
+    public function getSalt()
+    {
         return $this->salt;
     }
 
-    public function setHash($h) {
+    public function setHash($h)
+    {
         $this->hash = $h;
     }
 
-    public function setSalt($s) {
+    public function setSalt($s)
+    {
         $this->salt = $s;
     }
-
 } // end Crypto
-
-?>
+;

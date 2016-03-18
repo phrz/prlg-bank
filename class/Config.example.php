@@ -1,6 +1,6 @@
 <?php
-    class Config {
-
+    class Config
+    {
         public static $database = [
             'host' => '',
             'username' => '',
@@ -8,12 +8,11 @@
             'database' => '',
             'charset' => 'utfmb4', // table charset
             'prefix' => '', // table prefix
-            'timezone' => 'America/Chicago' // Central Time with DST
+            'timezone' => 'America/Chicago', // Central Time with DST
         ];
 
         public static $nonce = [
-			       // Nonce expiry interval:
-            'expiry' => 'PT5M' // DateInterval spec (5 Minutes)
+                   // Nonce expiry interval:
+            'expiry' => 'PT5M', // DateInterval spec (5 Minutes)
         ];
     }
-?>

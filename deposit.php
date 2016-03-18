@@ -20,24 +20,23 @@
     $form->addField('nonce', 'Form::validateNonce');
 
     $form->submit([
-        'success' => function($data) {
+        'success' => function ($data) {
 
             // get the Account Model
             $number = $data['toAccount'];
             $account = Account::find($number);
 
             // Add the requested amount
-            $deposit = floatval( $data['amount'] );
+            $deposit = floatval($data['amount']);
             $account->balance += $deposit;
 
             // Commit the Model back to the DB
             $account->save();
 
-            header("Location: accounts.php?e=d0");
+            header('Location: accounts.php?e=d0');
         },
-        'failure' => function($data) {
+        'failure' => function ($data) {
             // Redirect back to accounts
-            header("Location: accounts.php?e=d1");
-        }
+            header('Location: accounts.php?e=d1');
+        },
     ]);
-?>
