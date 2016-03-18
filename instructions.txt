@@ -1,0 +1,42 @@
+Create a web application containing the following php files that allows a user to login to their
+bank account and view their account balances, and provides the option to transfer, withdraw and deposit money
+users should NOT be allowed to see each other's account balances or withdraw / deposit / transfer to or from
+an account that does not belong to them. You should use a database to store the account information,
+and communicate to the database using SQL.
+
+index.php
+ - if user does not have a valid session id
+   - prompt the user to login
+   - POST login creds to login.php
+ - if user has a valid session id
+   - redirect the user to accounts.php
+
+login.php
+ - POST request accepts username and password,
+   hashes password with salt, and queries database for
+   valid username/hashed password combination.
+ - transfers user to accounts.php on successful login
+ - transfers user back to index.php on unsuccessful login
+
+accounts.php
+ - show user their account balances (fetched from database)
+ - give options to withdraw money, deposit money, transfer money
+
+
+transfer.php
+ - POST request to transfer from one account to another account
+ - validates session ID belongs to both accounts
+ - validates enough money in source account and updates database accordingly
+
+deposit.php
+ - POST request to add money to an account
+ - validates session ID belongs to account
+ - updates database accordingly
+
+withdraw.php
+ - POST request to subtract money from account
+
+logout.php
+ - kills the active session and transfers user back to index.php
+
+ 
