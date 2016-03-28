@@ -51,9 +51,9 @@
 
         public function isAuth()
         {
-            if (!headers_sent()) {
-                session_regenerate_id();
-            }
+            // if (!headers_sent()) {
+            //     session_regenerate_id();
+            // }
 
             return isset($_SESSION['user']);
         }

@@ -17,4 +17,24 @@
     $user = User::find($s->user);
 
     const INDIRECT = true;
-    include 'pages/accounts_page.php';
+
+    if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+        echo json_encode(jsonAccountData());
+        return;
+    } else {
+        include 'pages/accounts_page.php';
+    }
+
+    function jsonAccountData() {
+        $data = [
+            'accounts' => []
+        ];
+        foreach ($user->accounts as $account) {
+            array_push($data['accounts'], [
+                'number' => $account->number,
+                'balance' => money_format('%i', $account->balance)
+            ]);
+            $data['nonce'] = NonceManager::generate($user)->nonce;
+        }
+        return $data;
+    }

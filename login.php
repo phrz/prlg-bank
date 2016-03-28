@@ -15,8 +15,16 @@
 
     $s = new Session();
 
-    if ($s->authenticate($_POST['username'], $_POST['password'])) {
-        header('Location: accounts.php');
+    if ($s->authenticate($_POST['username'] ?? null, $_POST['password'] ?? null)) {
+        if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+            http_response_code(200); // OK
+        } else {
+            header('Location: accounts.php');
+        }
     } else {
-        header('Location: index.php?e=0');
+        if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+            http_response_code(401); // Unauthorized
+        } else {
+            header('Location: index.php?e=0');
+        }
     }
