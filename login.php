@@ -15,16 +15,22 @@
 
     $s = new Session();
 
+    // handle JSON and return JSON
+    if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+        $bodyRaw = file_get_contents("php://input");
+        $body = json_decode($bodyRaw, true);
+        
+        if($s->authenticate($body['username'] ?? null, $body['password'] ?? null)) {
+            http_response_code(200);
+            return;
+        } else {
+            http_response_code(401);
+            return;
+        }
+    }
+
     if ($s->authenticate($_POST['username'] ?? null, $_POST['password'] ?? null)) {
-        if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
-            http_response_code(200); // OK
-        } else {
-            header('Location: accounts.php');
-        }
+        header('Location: accounts.php');
     } else {
-        if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
-            http_response_code(401); // Unauthorized
-        } else {
-            header('Location: index.php?e=0');
-        }
+        header('Location: index.php?e=0');
     }
