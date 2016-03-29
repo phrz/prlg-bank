@@ -24,7 +24,7 @@
                     $this->_formData = &$_POST;
                     break;
                 case 'JSON':
-                    $this->_formData = json_decode(file_get_contents('php://input'));
+                    $this->_formData = json_decode(file_get_contents('php://input'), true);
             }
         }
 
