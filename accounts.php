@@ -18,6 +18,9 @@
         echo json_encode(jsonAccountData());
         return;
     } else {
+        $s = new Session();
+        $s->isAuth() or header('Location: index.php?e=2');
+        $user = User::find($s->user);
         include 'pages/accounts_page.php';
     }
 
