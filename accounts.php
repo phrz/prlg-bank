@@ -27,7 +27,10 @@
     function jsonAccountData() {
 
         $s = new Session();
-        $s->isAuth() or http_send_status(401);
+        if(!$s->isAuth()) {
+            http_response_code(401);
+            return;
+        }
 
         $user = User::find($s->user);
 
