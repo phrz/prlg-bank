@@ -70,6 +70,7 @@
             // build model
             if (isset($rows[0])) {
                 $model = new static($rows[0]);
+                error_log('successful find()');
             } else {
                 throw new Exception('Could not find()!', 1);
             }
