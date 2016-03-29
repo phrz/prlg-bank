@@ -11,9 +11,6 @@
     include_once 'class/NonceManager.php';
     include_once 'class/Nonce.php';
 
-    $s = new Session();
-    $s->isAuth() or header('Location: index.php?e=2');
-
     const INDIRECT = true;
 
     if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
@@ -24,6 +21,9 @@
     }
 
     function jsonAccountData() {
+
+        $s = new Session();
+        $s->isAuth() or header('Location: index.php?e=2');
 
         $user = User::find($s->user);
 
