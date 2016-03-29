@@ -27,7 +27,7 @@
     function jsonAccountData() {
 
         $s = new Session();
-        $s->isAuth() or header('Location: index.php?e=2');
+        $s->isAuth() or http_send_status(401);
 
         $user = User::find($s->user);
 
