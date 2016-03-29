@@ -33,10 +33,20 @@
             // Commit the Model back to the DB
             $account->save();
 
-            header('Location: accounts.php?e=d0');
+            if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+                header('Content-Type: application/json');
+                http_response_code(200); // OK
+            } else {
+                header('Location: accounts.php?e=d0');
+            }
         },
         'failure' => function ($data) {
-            // Redirect back to accounts
-            header('Location: accounts.php?e=d1');
+            if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+                header('Content-Type: application/json');
+                http_response_code(409); // Conflict
+            } else {
+                // Redirect back to accounts
+                header('Location: accounts.php?e=d1');
+            }
         },
     ]);
