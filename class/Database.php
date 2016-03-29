@@ -45,6 +45,7 @@
                         $this->settings['username'],
                         $this->settings['password']);
                 } catch (PDOException $pe) {
+                    error_log($pe->getMessage());
                     die('Unable to connect to database');
                 }
 
