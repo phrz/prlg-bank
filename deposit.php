@@ -11,10 +11,21 @@
     include_once 'class/Account.php';
     include_once 'class/Session.php';
 
-    $s = new Session();
-    $s->isAuth() or header('Location: index.php?e=2');
+    $jsonMode = ($_SERVER['HTTP_ACCEPT'] == 'application/json');
 
-    $form = new Form('POST');
+    $s = new Session();
+
+    if(!$s->isAuth()) {
+        $jsonMode ? http_response_code(401) : header('Location: index.php?e=2');
+        return;
+    }
+
+    if($jsonMode) {
+        $form = new Form('JSON');
+    } else {
+        $form = new Form('POST');
+    }
+
     $form->addField('amount', 'Form::isMoney');
     $form->addField('toAccount', 'Form::validateAccount');
     $form->addField('nonce', 'Form::validateNonce');

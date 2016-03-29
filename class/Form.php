@@ -23,6 +23,8 @@
                 case 'POST':
                     $this->_formData = &$_POST;
                     break;
+                case 'JSON':
+                    $this->_formData = json_decode(file_get_contents('php://input'));
             }
         }
 
@@ -112,7 +114,12 @@
             foreach ($this->_fields as $fieldName => $parameters) {
 
                 // Get the corresponding submitted value
-                $value = $this->_formData[$fieldName];
+                if(isset($this->_formData[$fieldName])) {
+                    $value = $this->_formData[$fieldName];
+                } else {
+                    throw new Exception("failed to provide field $fieldName",1);
+                    return false;
+                }
 
                 // Check for unsubmitted or empty fields
                 if (!isset($value) || empty($value)) {
