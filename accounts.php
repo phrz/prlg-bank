@@ -14,6 +14,7 @@
     const INDIRECT = true;
 
     if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+        header('Content-Type: application/json');
         echo json_encode(jsonAccountData());
         return;
     } else {
