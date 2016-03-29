@@ -44,17 +44,13 @@
 
             // good password
             // log in
-            $_SESSION['user'] = $_POST['username'];
+            $_SESSION['user'] = $username;
 
             return true;
         }
 
         public function isAuth()
         {
-            // if (!headers_sent()) {
-            //     session_regenerate_id();
-            // }
-
             return isset($_SESSION['user']);
         }
 
