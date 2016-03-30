@@ -9,10 +9,21 @@
     include_once 'class/Account.php';
     include_once 'class/Session.php';
 
-    $s = new Session();
-    $s->isAuth() or header('Location: index.php?e=2');
+    $jsonMode = ($_SERVER['HTTP_ACCEPT'] == 'application/json');
 
-    $form = new Form('POST');
+    $s = new Session();
+
+    if(!$s->isAuth()) {
+        $jsonMode ? http_response_code(401) : header('Location: index.php?e=2');
+        return;
+    }
+
+    if($jsonMode) {
+        $form = new Form('JSON');
+    } else {
+        $form = new Form('POST');
+    }
+
     $form->addField('amount', 'Form::isMoney');
     $form->addField('fromAccount', 'Form::validateAccount');
     $form->addField('nonce', 'Form::validateNonce');
@@ -29,18 +40,34 @@
             $withdraw = floatval($data['amount']);
 
             if ($withdraw > $account->balance) {
-                header('Location: accounts.php?e=w2');
+                // Insufficient funds
+                if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+                    header('Content-Type: application/json');
+                    http_response_code(409); // Conflict
+                } else {
+                    header('Location: accounts.php?e=w2');
+                }
             } else {
+                // Sufficient funds
                 $account->balance -= $withdraw;
 
                 // Commit the Model back to the DB
                 $account->save();
 
-                header('Location: accounts.php?e=w0');
+                if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+                    header('Content-Type: application/json');
+                    http_response_code(200); // OK
+                } else {
+                    header('Location: accounts.php?e=w0');
+                }
             }
         },
         'failure' => function ($data) {
-            // Redirect back to accounts
-            header('Location: accounts.php?e=w1');
+            if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
+                header('Content-Type: application/json');
+                http_response_code(400); // Bad Request
+            } else {
+                header('Location: accounts.php?e=w1');
+            }
         },
     ]);

@@ -54,7 +54,7 @@
         'failure' => function ($data) {
             if($_SERVER['HTTP_ACCEPT'] == 'application/json') {
                 header('Content-Type: application/json');
-                http_response_code(409); // Conflict
+                http_response_code(400); // Bad Request
             } else {
                 // Redirect back to accounts
                 header('Location: accounts.php?e=d1');
